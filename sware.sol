@@ -21,7 +21,7 @@ contract Owned {
 }
 
 contract Sware is Owned {
-    uint public fee;
+    uint public fee = 0;
     event Wrote(string _content);
     
     function changeFee(uint _fee) onlyowner public {
