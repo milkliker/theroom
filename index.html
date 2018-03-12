@@ -135,12 +135,22 @@
       }
 
       $btn.css("color", "#333").html("PUBLISHING...").prop("disabled", true);
-      $.post('/api/Oath/', JSON.stringify({"OathContent": cnt}), function (data) {
-        if (data.TxHash && data.TxHash.length == 66) {
-          $content.attr("readonly", "readonly").val(cnt);
-          window.location.href = '#/' + data.TxHash + '|' + encodeURIComponent(cnt);
-          showTracking(window.location.href, data.TxHash);
-        } else {
+      $.ajax({
+        type: 'POST',
+        url: '/api/Oath/',
+        data: JSON.stringify({"OathContent": cnt}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          if (data.TxHash && data.TxHash.length == 66) {
+            $content.attr("readonly", "readonly").val(cnt);
+            window.location.href = '#/' + data.TxHash + '|' + encodeURIComponent(cnt);
+            showTracking(window.location.href, data.TxHash);
+          } else {
+            $btn.css("color", "#900").html("FAIL, RETRY..").prop("disabled", false);
+          }
+        },
+        failure: function(errMsg) {
           $btn.css("color", "#900").html("FAIL, RETRY..").prop("disabled", false);
         }
       });
