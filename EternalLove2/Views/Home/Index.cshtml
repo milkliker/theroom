@@ -1,0 +1,165 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head class="notracker">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1" name=viewport>
+    <title>The Room</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1-rc2/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: "Helvetica Neue", "Helvetica";
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: -prefix-linear-gradient(left top, #aaf, #fcc);
+            background: linear-gradient(to bottom right, #aaf, #fcc);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        #content {
+            border-radius: 10px;
+            opacity: 0.5;
+            background: #fff;
+            border: 0px;
+            width: 200px;
+            height: 120px;
+            padding: 10px;
+            margin-top: 30px;
+            font-size: 15px;
+            outline: none;
+            display: none;
+        }
+
+        #qrcode {
+            margin: 10px auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 10px;
+            display: none;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        #code {
+            width: 150px;
+            height: 150px;
+        }
+
+        #submit {
+            margin-top: 10px;
+            border: 0px;
+            border-radius: 10px;
+            width: 222px;
+            height: 45px;
+            padding: 10px;
+            opacity: 0.5;
+            text-align: center;
+            outline: none;
+            display: none;
+            font-size: 15px;
+            color: #333;
+        }
+
+        #logo {
+            margin: 0px auto;
+            width: 64px;
+            height: 64px;
+            background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMS4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ3Ny41IDQ3Ny41IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0NzcuNSA0NzcuNTsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik00MDcuNTMzLDcwYy00NS4xLTQ1LjEtMTA1LTcwLTE2OC44LTcwcy0xMjMuNywyNC44LTE2OC44LDY5LjljLTg3LDg3LTkzLjMsMjI2LTE1LjgsMzIwLjIgICAgYy0xMC43LDIxLjktMjMuNCwzNi41LTM3LjYsNDMuNWMtOC43LDQuMy0xMy42LDEzLjctMTIuMiwyMy4zYzEuNSw5LjcsOC45LDE3LjIsMTguNiwxOC43YzUuMywwLjgsMTEsMS4zLDE2LjksMS4zbDAsMCAgICBjMjkuMywwLDYwLjEtMTAuMSw4NS44LTI3LjhjMzQuNiwxOC42LDczLjUsMjguNCwxMTMuMSwyOC40YzYzLjgsMCwxMjMuNy0yNC44LDE2OC44LTY5LjlzNjkuOS0xMDUuMSw2OS45LTE2OC44ICAgIFM0NTIuNjMzLDExNS4xLDQwNy41MzMsNzB6IE0zODguNDMzLDM4OC41Yy00MCw0MC05My4yLDYyLTE0OS43LDYyYy0zNy44LDAtNzQuOS0xMC4xLTEwNy4yLTI5LjFjLTIuMS0xLjItNC41LTEuOS02LjgtMS45ICAgIGMtMi45LDAtNS45LDEtOC4zLDIuOGMtMzAuNiwyMy43LTYxLjQsMjcuMi03NC45LDI3LjVjMTYuMS0xMiwyOS42LTMwLjYsNDAuOS01Ni41YzIuMS00LjgsMS4yLTEwLjQtMi4zLTE0LjQgICAgYy03NC04My42LTcwLjEtMjExLDguOS0yOTBjNDAtNDAsOTMuMi02MiwxNDkuNy02MmM1Ni42LDAsMTA5LjcsMjIsMTQ5LjcsNjJDNDcxLjAzMywxNzEuNiw0NzEuMDMzLDMwNiwzODguNDMzLDM4OC41eiIgZmlsbD0iI0Q4MDAyNyIvPgoJCTxwYXRoIGQ9Ik0yOTkuMzMzLDEyOS40Yy0yMS42LDAtNDEuOSw4LjQtNTcuMiwyMy43bC0zLjQsMy40bC0zLjQtMy40Yy0xNS4zLTE1LjMtMzUuNi0yMy43LTU3LjItMjMuN2MtMjEuNSwwLTQxLjgsOC40LTU3LDIzLjYgICAgYy0xNS4zLDE1LjMtMjMuNywzNS42LTIzLjYsNTcuMWMwLDIxLjYsOC41LDQxLjgsMjMuNyw1Ny4xbDEwNy45LDEwNy45YzIuNiwyLjYsNi4xLDQsOS41LDRzNi45LTEuMyw5LjUtMy45bDEwOC4yLTEwNy44ICAgIGMxNS4zLTE1LjMsMjMuNy0zNS42LDIzLjctNTcuMWMwLTIxLjYtOC40LTQxLjktMjMuNi01Ny4yQzM0MS4xMzMsMTM3LjgsMzIwLjgzMywxMjkuNCwyOTkuMzMzLDEyOS40eiBNMzM3LjIzMywyNDguM2wtOTguNiw5OC4yICAgIGwtOTguNC05OC40Yy0xMC4yLTEwLjItMTUuOC0yMy43LTE1LjgtMzguMWMwLTE0LjQsNS42LTI3LjksMTUuNy0zOGMxMC4xLTEwLjEsMjMuNi0xNS43LDM4LTE1LjdzMjcuOSw1LjYsMzguMSwxNS44bDEzLDEzICAgIGM1LjMsNS4zLDEzLjgsNS4zLDE5LjEsMGwxMi45LTEyLjljMTAuMi0xMC4yLDIzLjctMTUuOCwzOC4xLTE1LjhjMTQuMywwLDI3LjgsNS42LDM4LDE1LjhzMTUuOCwyMy43LDE1LjcsMzggICAgQzM1My4wMzMsMjI0LjYsMzQ3LjQzMywyMzguMSwzMzcuMjMzLDI0OC4zeiIgZmlsbD0iI0Q4MDAyNyIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        #create {
+            display: none;
+        }
+
+            #create a {
+                color: #666;
+            }
+    </style>
+</head>
+<body>
+    <div style="height: 30px"></div>
+    <div id="logo"></div>
+    <textarea id="content" placeholder="Your oath here"></textarea>
+    <div id="qrcode">
+        <a id="etherscan" href="#">
+            <div id="code" style="width:150px;height:150px"></div>
+        </a>
+    </div>
+    <div id="create">
+        <a href="/">I wanna publish my oath!</a>
+    </div>
+    <br />
+    <button id="submit">PUBLISH</button>
+    <script>
+  var $content = $("#content");
+  var $qrcode = $("#qrcode");
+  var $code = $("#code");
+  var $btn = $("#submit");
+  $(document).ready(function () {
+    var url = window.location.href;
+    var startPosition = url.indexOf('#/0x');
+    if (startPosition != -1 && url.substr(startPosition).length >= 68) {
+      var txid = url.substr(startPosition + 2, 66);
+      $.get('/api/Oath/' + txid, {}, function (data) {
+        var content;
+        if (data.OathContent && data.OathContent.length > 0) {
+          content = data.OathContent;
+        } else {
+          content = decodeURIComponent(url.substr(startPosition + 69));
+        }
+        $content.attr("readonly", "readonly").val(content).show(300);
+        $("#etherscan").attr("href", "https://ropsten.etherscan.io/tx/" + txid);
+        showTracking(url, txid);
+      });
+    } else {
+      $content.show(300);
+      $btn.show(600);
+    }
+  });
+  function showTracking(url, txid) {
+    $btn.hide();
+    $content.css('background', 'rgba(255, 255, 255, 0.4)').css('font-weight', 'bold');
+    $code.qrcode({width: 180,height: 180,text: url});
+    $qrcode.show();
+    $("#create").show(300);
+  }
+  $btn.click(
+    function () {
+      var cnt = $content.val();
+      if (cnt.length <= 0 || cnt.length > 100) {
+        alert("Length should between 1 and 99");
+        return false;
+      }
+      $btn.css("color", "#333").html("PUBLISHING...").prop("disabled", true);
+      $.ajax({
+        type: 'POST',
+        url: '/api/Oath/',
+        data: JSON.stringify({"OathContent": cnt}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          if (data.TxHash && data.TxHash.length == 66) {
+            $content.attr("readonly", "readonly").val(cnt);
+            window.location.href = '#/' + data.TxHash + '|' + encodeURIComponent(cnt);
+            showTracking(window.location.href, data.TxHash);
+          } else {
+            $btn.css("color", "#900").html("FAIL, RETRY..").prop("disabled", false);
+          }
+        },
+        failure: function(errMsg) {
+          $btn.css("color", "#900").html("FAIL, RETRY..").prop("disabled", false);
+        }
+      });
+    }
+  );
+    </script>
+</body>
+</html>
